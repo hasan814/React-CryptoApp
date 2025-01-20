@@ -1,10 +1,9 @@
+import { fetchData, searchCoin } from "../services/fetchData";
 import { useEffect, useState } from "react";
 import { CryptoContext } from "./CryptoContext";
-import { fetchData, searchCoin } from "../services/fetchData";
 import { Toaster } from "react-hot-toast";
 
 import PropTypes from "prop-types";
-import Loader from "../components/elements/Loader";
 import toast from "react-hot-toast";
 
 const CryptoProvider = ({ children }) => {
@@ -12,9 +11,9 @@ const CryptoProvider = ({ children }) => {
   const [cryptoData, setCryptoData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currency, setCurrency] = useState("usd");
+  const [coins, setCoins] = useState([]);
   const [text, setText] = useState("");
   const [page, setPage] = useState(1);
-  const [coins, setCoins] = useState([]);
 
   // ============== Effect ===============
   useEffect(() => {
@@ -34,13 +33,17 @@ const CryptoProvider = ({ children }) => {
   }, [page, currency]);
 
   useEffect(() => {
+    setCoins([]);
     if (!text) return;
     const searchCryptoData = async () => {
       try {
+        setIsLoading(true);
         const { data } = await searchCoin(text);
         if (data.coins) setCoins(data.coins);
       } catch (error) {
         console.error(`Failed to fetch data: ${error.message}`);
+      } finally {
+        setIsLoading(false);
       }
     };
     searchCryptoData();
@@ -52,6 +55,7 @@ const CryptoProvider = ({ children }) => {
       value={{
         text,
         page,
+        coins,
         setPage,
         setText,
         currency,
@@ -61,7 +65,7 @@ const CryptoProvider = ({ children }) => {
       }}
     >
       <Toaster />
-      {isLoading ? <Loader /> : children}
+      {children}
     </CryptoContext.Provider>
   );
 };
