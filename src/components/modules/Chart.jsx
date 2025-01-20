@@ -1,9 +1,13 @@
+import { useContext, useState } from "react";
 import { CryptoContext } from "../../context/CryptoContext";
-import { useContext } from "react";
 
 const Chart = () => {
+  // ============== State ==============
+  const [type, setType] = useState("prices");
+
   // ============== Context ==============
   const { chart, setChart } = useContext(CryptoContext);
+  console.log(chart);
 
   // ============== Rendering ==============
   return (
