@@ -14,14 +14,23 @@ export const fetchData = async (page, currency) => {
   }
 };
 
+let controller;
+
 export const searchCoin = async (query) => {
+  if (controller) controller.abort();
+  controller = new AbortController();
   try {
     const response = await axios.get(
-      `${BASE_URL}/search?query=${query}&x_cg_demo_api_key=CG-WPQo3LGXH5ywS2iJTeXJDZHY`
+      `${BASE_URL}/search?query=${query}&x_cg_demo_api_key=CG-WPQo3LGXH5ywS2iJTeXJDZHY`,
+      { signal: controller.signal }
     );
     return response;
   } catch (error) {
-    console.error("Error Fetching Data", error.message);
-    throw error;
+    if (error.name === "CanceledError") {
+      console.log("Request Canceled:", query);
+    } else {
+      console.error("Error Fetching Data", error.message);
+      throw error;
+    }
   }
 };
