@@ -34,3 +34,15 @@ export const searchCoin = async (query) => {
     }
   }
 };
+
+export const marketChart = async (coin) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/coins/${coin}/market_chart?vs_currency=usd&days=7`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error Fetching Data", error.message);
+    throw error;
+  }
+};

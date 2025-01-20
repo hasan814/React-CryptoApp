@@ -1,4 +1,4 @@
-import { fetchData, searchCoin } from "../services/fetchData";
+import { fetchData, marketChart, searchCoin } from "../services/fetchData";
 import { useEffect, useState } from "react";
 import { CryptoContext } from "./CryptoContext";
 import { Toaster } from "react-hot-toast";
@@ -11,6 +11,7 @@ const CryptoProvider = ({ children }) => {
   const [cryptoData, setCryptoData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currency, setCurrency] = useState("usd");
+  const [chart, setChart] = useState(null);
   const [coins, setCoins] = useState([]);
   const [text, setText] = useState("");
   const [page, setPage] = useState(1);
@@ -49,6 +50,25 @@ const CryptoProvider = ({ children }) => {
     searchCryptoData();
   }, [text]);
 
+  // ============== Show Handler ===============
+  const showHandler = async (id) => {
+    try {
+      setIsLoading(true);
+      const { data } = await marketChart(id);
+      if (data) {
+        setChart(data);
+        toast.success("Chart data loaded successfully!");
+      } else {
+        toast.error("No data available for the selected coin.");
+      }
+    } catch (error) {
+      console.error(`Failed to load chart data: ${error.message}`);
+      toast.error(`Failed to load chart data: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // ============== Rendering ===============
   return (
     <CryptoContext.Provider
@@ -56,12 +76,15 @@ const CryptoProvider = ({ children }) => {
         text,
         page,
         coins,
+        chart,
         setPage,
         setText,
         currency,
+        setChart,
         isLoading,
         cryptoData,
         setCurrency,
+        showHandler,
       }}
     >
       <Toaster />
