@@ -1,3 +1,6 @@
+import { CryptoContext } from "../../context/CryptoContext";
+import { useContext } from "react";
+
 import PropTypes from "prop-types";
 import chartDown from "../../assets/chart-down.svg";
 import chartUp from "../../assets/chart-up.svg";
@@ -10,6 +13,18 @@ const TableRow = ({
   total_volume,
   price_change_percentage_24h: price_change,
 }) => {
+  // ============= Context ============
+  const { currency } = useContext(CryptoContext);
+  const symbolCurrency =
+    currency === "usd"
+      ? "$"
+      : currency === "eur"
+      ? "€"
+      : currency === "jpy"
+      ? "¥"
+      : "";
+
+  // ============= Rendering ============
   return (
     <tr className="hover:bg-gray-100">
       <td className="px-4 py-2 border border-gray-200">
@@ -20,7 +35,8 @@ const TableRow = ({
       </td>
       <td className="px-4 py-2 border border-gray-200">{name}</td>
       <td className="px-4 py-2 border border-gray-200">
-        ${current_price.toLocaleString()}
+        {symbolCurrency}
+        {current_price.toLocaleString()}
       </td>
       <td
         className={`px-4 py-2 border border-gray-200 ${
