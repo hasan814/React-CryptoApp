@@ -11,13 +11,14 @@ const CryptoProvider = ({ children }) => {
   // ============== State ===============
   const [cryptoData, setCryptoData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   // ============== Effect ===============
   useEffect(() => {
     const fetchCryptoData = async () => {
       try {
         setIsLoading(true);
-        const { data } = await fetchData();
+        const { data } = await fetchData(page);
         setCryptoData(data);
         toast.success("Data Loaded Successfully!");
       } catch (error) {
@@ -27,11 +28,11 @@ const CryptoProvider = ({ children }) => {
       }
     };
     fetchCryptoData();
-  }, []);
+  }, [page]);
 
   // ============== Rendering ===============
   return (
-    <CryptoContext.Provider value={{ cryptoData, isLoading }}>
+    <CryptoContext.Provider value={{ cryptoData, isLoading, page, setPage }}>
       <Toaster />
       {isLoading ? <Loader /> : children}
     </CryptoContext.Provider>
