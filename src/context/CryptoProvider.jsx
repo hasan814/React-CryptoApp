@@ -4,6 +4,7 @@ import { fetchData } from "../services/fetchData";
 import { Toaster } from "react-hot-toast";
 
 import PropTypes from "prop-types";
+import Loader from "../components/elements/Loader";
 import toast from "react-hot-toast";
 
 const CryptoProvider = ({ children }) => {
@@ -32,7 +33,7 @@ const CryptoProvider = ({ children }) => {
   return (
     <CryptoContext.Provider value={{ cryptoData, isLoading }}>
       <Toaster />
-      {children}
+      {isLoading ? <Loader /> : children}
     </CryptoContext.Provider>
   );
 };
