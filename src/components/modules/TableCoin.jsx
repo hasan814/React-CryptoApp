@@ -2,8 +2,7 @@ import { CryptoContext } from "../../context/CryptoContext";
 import { useContext } from "react";
 import { v4 } from "uuid";
 
-import chartDown from "../../assets/chart-down.svg";
-import chartUp from "../../assets/chart-up.svg";
+import TableRow from "./TableRow";
 
 const TableCoin = () => {
   // ============ Context ============
@@ -11,40 +10,25 @@ const TableCoin = () => {
 
   // ============ Rendering ============
   return (
-    <div>
-      <table>
-        <thead>
+    <div className="overflow-x-auto">
+      <table className="table-auto w-full border-collapse border border-gray-200">
+        <thead className="bg-gray-100">
           <tr>
-            <th>Coin</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>24h</th>
-            <th>Total Volume</th>
-            <th></th>
+            <th className="px-4 py-2 text-left border border-gray-200">Coin</th>
+            <th className="px-4 py-2 text-left border border-gray-200">Name</th>
+            <th className="px-4 py-2 text-left border border-gray-200">
+              Price
+            </th>
+            <th className="px-4 py-2 text-left border border-gray-200">24h</th>
+            <th className="px-4 py-2 text-left border border-gray-200">
+              Total Volume
+            </th>
+            <th className="px-4 py-2 text-left border border-gray-200"></th>
           </tr>
         </thead>
         <tbody>
           {cryptoData.map((coin) => (
-            <tr key={v4()}>
-              <td>
-                <div>
-                  <img src={coin.image} alt="" />
-                  <span>{coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>{coin.name}</td>
-              <td>${coin.current_price.toLocaleString()}</td>
-              <td>{coin.price_change_percentage_24h.toFixed(2)}%</td>
-              <td>{coin.total_volume.toLocaleString()}</td>
-              <td>
-                <img
-                  src={
-                    coin.price_change_percentage_24h > 0 ? chartUp : chartDown
-                  }
-                  alt={coin.name}
-                />
-              </td>
-            </tr>
+            <TableRow {...coin} key={v4()} />
           ))}
         </tbody>
       </table>
