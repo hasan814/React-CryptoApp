@@ -38,7 +38,7 @@ const Chart = () => {
         X
       </button>
       {/* Chart Content */}
-      <Drowing type={type} />
+      <Drowing type={type} setType={setType} />
     </div>
   );
 };

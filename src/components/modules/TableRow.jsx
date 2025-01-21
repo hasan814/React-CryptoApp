@@ -8,6 +8,8 @@ import chartUp from "../../assets/chart-up.svg";
 const TableRow = ({
   id,
   name,
+  ath,
+  market_cap,
   image,
   symbol,
   total_volume,
@@ -25,9 +27,22 @@ const TableRow = ({
       ? "¥"
       : "";
 
+  // ============= Coin Data Object ============
+  const coinData = {
+    id,
+    ath,
+    name,
+    image,
+    symbol,
+    market_cap,
+    total_volume,
+    current_price,
+    price_change_percentage_24h: price_change,
+  };
+
   // ============= Rendering ============
   return (
-    <tr onClick={() => showHandler(id)} className="hover:bg-gray-100">
+    <tr onClick={() => showHandler(coinData)} className="hover:bg-gray-100">
       <td className="px-4 py-2 border border-gray-200">
         <div className="flex items-center space-x-2">
           <img src={image} alt="" className="w-6 h-6" />
@@ -62,9 +77,11 @@ const TableRow = ({
 
 TableRow.propTypes = {
   id: PropTypes.string.isRequired,
+  ath: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   symbol: PropTypes.string.isRequired,
+  market_cap: PropTypes.number.isRequired,
   total_volume: PropTypes.number.isRequired,
   current_price: PropTypes.number.isRequired,
   price_change_percentage_24h: PropTypes.number.isRequired,

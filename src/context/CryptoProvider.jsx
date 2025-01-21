@@ -51,12 +51,12 @@ const CryptoProvider = ({ children }) => {
   }, [text]);
 
   // ============== Show Handler ===============
-  const showHandler = async (id) => {
+  const showHandler = async (coin) => {
     try {
       setIsLoading(true);
-      const { data } = await marketChart(id);
+      const { data } = await marketChart(coin.id);
       if (data) {
-        setChart(data);
+        setChart({ ...data, coin });
         toast.success("Chart data loaded successfully!");
       } else {
         toast.error("No data available for the selected coin.");
